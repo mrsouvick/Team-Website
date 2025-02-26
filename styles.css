@@ -1,0 +1,175 @@
+/* General Styles */
+body {
+  font-family: 'Orbitron', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+/* Particle Animation Container */
+#particles-js {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo img {
+  height: 50px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: #00ffff; /* Cyan */
+}
+
+.hamburger-menu {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Hero Section */
+.hero-section {
+  text-align: center;
+  padding: 150px 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.hero-content p {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+}
+
+.cta-button {
+  background: #00ffff; /* Cyan */
+  color: #000;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s;
+}
+
+.cta-button:hover {
+  background: #00b3b3; /* Darker Cyan */
+}
+
+/* Team Section */
+.team-section {
+  text-align: center;
+  padding: 50px 20px;
+  background: rgba(0, 0, 0, 0.9);
+  position: relative;
+  z-index: 1;
+}
+
+.team-members {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.team-card {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+  width: 200px;
+  transition: transform 0.3s;
+}
+
+.team-card:hover {
+  transform: scale(1.05);
+}
+
+.team-card img {
+  width: 100%;
+  border-radius: 50%;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  position: relative;
+  z-index: 1;
+}
+
+.social-links {
+  margin-top: 10px;
+}
+
+.social-links a {
+  color: white;
+  margin: 0 10px;
+  font-size: 20px;
+  transition: color 0.3s;
+}
+
+.social-links a:hover {
+  color: #00ffff; /* Cyan */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .hamburger-menu {
+    display: block;
+  }
+
+  .team-card {
+    width: 100%;
+    max-width: 200px;
+  }
+}
