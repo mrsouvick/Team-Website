@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn how to apply ROS concepts to real-world robotics projects. Step-by-step examples and instructions for building autonomous robots.">
+    <title>Real-World Robotics Projects - Tech Tronics</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #0a0f1f; /* Dark blue background */
+            color: #e0e0e0; /* Light gray text */
+            line-height: 1.6;
+        }
+        h1, h2, h3 {
+            color: #00ffcc; /* Neon teal for headings */
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        h2 {
+            font-size: 2rem;
+            margin-top: 40px;
+            margin-bottom: 15px;
+        }
+        h3 {
+            font-size: 1.5rem;
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 1.1rem;
+            color: #c0c0c0; /* Light gray for paragraphs */
+            margin-bottom: 20px;
+        }
+        a {
+            color: #00ffcc; /* Neon teal for links */
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        pre {
+            background-color: #1a1f2e; /* Dark blue code background */
+            padding: 15px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+        code {
+            font-family: 'Courier New', monospace;
+            color: #00ffcc; /* Neon teal for code */
+        }
+        .cta-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #00ffcc; /* Neon teal button */
+            color: #0a0f1f; /* Dark blue text */
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .cta-button:hover {
+            background-color: #0077ff; /* Blue hover effect */
+        }
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 20px;
+            background-color: #121827; /* Dark blue footer background */
+            color: #808080; /* Gray footer text */
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Tutorial Title -->
+        <h1>Real-World Robotics Projects</h1>
+
+        <!-- Tutorial Content -->
+        <p>
+            ROS (Robot Operating System) is widely used in real-world robotics projects, from autonomous vehicles to industrial robots. In this tutorial, you'll learn how to apply ROS concepts to build real-world robotics projects, with step-by-step examples and instructions.
+        </p>
+
+        <h2>Project 1: Autonomous Mobile Robot</h2>
+        <p>
+            Build an autonomous mobile robot that can navigate in a known environment using the ROS Navigation Stack.
+        </p>
+        <h3>1. Set Up the Robot</h3>
+        <p>
+            Start with a mobile robot platform (e.g., TurtleBot, Husky, or a custom robot). Ensure the robot has sensors like LiDAR, cameras, and encoders.
+        </p>
+        <h3>2. Install ROS and Required Packages</h3>
+        <p>
+            Install ROS Noetic and the required packages for navigation:
+        </p>
+        <pre><code>sudo apt update
+sudo apt install ros-noetic-navigation ros-noetic-gmapping ros-noetic-amcl</code></pre>
+
+        <h3>3. Create a Map</h3>
+        <p>
+            Use SLAM (Simultaneous Localization and Mapping) to create a map of the environment:
+        </p>
+        <pre><code>roslaunch turtlebot3_slam turtlebot3_slam.launch slam_methods:=gmapping</code></pre>
+        <p>
+            Drive the robot around the environment to build the map, then save it:
+        </p>
+        <pre><code>rosrun map_server map_saver -f ~/map</code></pre>
+
+        <h3>4. Set Up Navigation</h3>
+        <p>
+            Use the ROS Navigation Stack to enable autonomous navigation:
+        </p>
+        <pre><code>roslaunch turtlebot3_navigation turtlebot3_navigation.launch map_file:=~/map.yaml</code></pre>
+
+        <h3>5. Test Navigation</h3>
+        <p>
+            Use RViz to set navigation goals and observe the robot's behavior:
+        </p>
+        <pre><code>rosrun rviz rviz</code></pre>
+
+        <h2>Project 2: Robotic Arm Manipulation</h2>
+        <p>
+            Build a robotic arm that can pick and place objects using ROS MoveIt!.
+        </p>
+        <h3>1. Set Up the Robotic Arm</h3>
+        <p>
+            Start with a robotic arm (e.g., UR5, Panda, or a custom arm). Ensure the arm has joint encoders and a gripper.
+        </p>
+        <h3>2. Install ROS and MoveIt!</h3>
+        <p>
+            Install ROS Noetic and MoveIt!:
+        </p>
+        <pre><code>sudo apt update
+sudo apt install ros-noetic-moveit</code></pre>
+
+        <h3>3. Configure MoveIt!</h3>
+        <p>
+            Use the MoveIt! Setup Assistant to configure the robotic arm:
+        </p>
+        <pre><code>roslaunch moveit_setup_assistant setup_assistant.launch</code></pre>
+        <p>
+            Follow the wizard to define the arm's kinematics, joints, and collision objects.
+        </p>
+
+        <h3>4. Control the Arm</h3>
+        <p>
+            Use MoveIt! to plan and execute arm movements:
+        </p>
+        <pre><code>roslaunch my_robot_moveit_config demo.launch</code></pre>
+
+        <h3>5. Test Pick and Place</h3>
+        <p>
+            Write a ROS node to perform pick-and-place tasks using the arm:
+        </p>
+        <pre><code># Example Python code for pick-and-place
+import rospy
+from moveit_commander import MoveGroupCommander
+
+def pick_and_place():
+    rospy.init_node('pick_and_place')
+    arm = MoveGroupCommander("arm")
+    gripper = MoveGroupCommander("gripper")
+
+    # Move to the pick position
+    arm.set_named_target("pick_position")
+    arm.go()
+
+    # Close the gripper
+    gripper.set_named_target("close")
+    gripper.go()
+
+    # Move to the place position
+    arm.set_named_target("place_position")
+    arm.go()
+
+    # Open the gripper
+    gripper.set_named_target("open")
+    gripper.go()
+
+if __name__ == "__main__":
+    pick_and_place()</code></pre>
+
+        <h2>Project 3: Autonomous Drone</h2>
+        <p>
+            Build an autonomous drone that can navigate using ROS and PX4.
+        </p>
+        <h3>1. Set Up the Drone</h3>
+        <p>
+            Start with a drone platform (e.g., DJI, Parrot, or a custom drone). Install PX4 firmware and connect it to ROS.
+        </p>
+        <h3>2. Install ROS and PX4</h3>
+        <p>
+            Install ROS Noetic and the PX4 ROS packages:
+        </p>
+        <pre><code>sudo apt update
+sudo apt install ros-noetic-mavros ros-noetic-mavros-extras</code></pre>
+
+        <h3>3. Configure the Drone</h3>
+        <p>
+            Use MAVROS to connect the drone to ROS:
+        </p>
+        <pre><code>roslaunch mavros px4.launch</code></pre>
+
+        <h3>4. Write a Navigation Node</h3>
+        <p>
+            Write a ROS node to control the drone's navigation:
+        </p>
+        <pre><code># Example Python code for drone navigation
+import rospy
+from geometry_msgs.msg import PoseStamped
+
+def navigate_to_position(x, y, z):
+    rospy.init_node('drone_navigation')
+    pub = rospy.Publisher('/mavros/setpoint_position/local', PoseStamped, queue_size=10)
+    rate = rospy.Rate(10)
+
+    pose = PoseStamped()
+    pose.pose.position.x = x
+    pose.pose.position.y = y
+    pose.pose.position.z = z
+
+    while not rospy.is_shutdown():
+        pub.publish(pose)
+        rate.sleep()
+
+if __name__ == "__main__":
+    navigate_to_position(10, 10, 5)</code></pre>
+
+        <h2>Next Steps</h2>
+        <p>
+            Now that you've learned how to apply ROS concepts to real-world robotics projects, you're ready to start building your own projects. Check out our <a href="ros-course.html" class="cta-button">ROS Noetic Mastery Course</a> to dive deeper into ROS and build real-world robotics applications.
+        </p>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2025 Tech Tronics. All rights reserved.</p>
+    </div>
+</body>
+</html>

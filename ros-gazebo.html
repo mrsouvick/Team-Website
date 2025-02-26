@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn how to use Gazebo for simulating robots in ROS. A step-by-step guide for setting up simulations, adding robots, and running them.">
+    <title>ROS Simulation with Gazebo - Tech Tronics</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #0a0f1f; /* Dark blue background */
+            color: #e0e0e0; /* Light gray text */
+            line-height: 1.6;
+        }
+        h1, h2, h3 {
+            color: #00ffcc; /* Neon teal for headings */
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        h2 {
+            font-size: 2rem;
+            margin-top: 40px;
+            margin-bottom: 15px;
+        }
+        h3 {
+            font-size: 1.5rem;
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 1.1rem;
+            color: #c0c0c0; /* Light gray for paragraphs */
+            margin-bottom: 20px;
+        }
+        a {
+            color: #00ffcc; /* Neon teal for links */
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        pre {
+            background-color: #1a1f2e; /* Dark blue code background */
+            padding: 15px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+        code {
+            font-family: 'Courier New', monospace;
+            color: #00ffcc; /* Neon teal for code */
+        }
+        .cta-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #00ffcc; /* Neon teal button */
+            color: #0a0f1f; /* Dark blue text */
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .cta-button:hover {
+            background-color: #0077ff; /* Blue hover effect */
+        }
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 20px;
+            background-color: #121827; /* Dark blue footer background */
+            color: #808080; /* Gray footer text */
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Tutorial Title -->
+        <h1>ROS Simulation with Gazebo</h1>
+
+        <!-- Tutorial Content -->
+        <p>
+            Gazebo is a powerful robot simulation tool that integrates seamlessly with ROS. It allows you to simulate robots in realistic environments, test algorithms, and validate designs before deploying them on real hardware. In this tutorial, you'll learn how to set up a Gazebo simulation, add robots, and run simulations in ROS.
+        </p>
+
+        <h2>What is Gazebo?</h2>
+        <p>
+            Gazebo is an open-source 3D robotics simulator that provides physics simulation, sensor simulation, and realistic environments. It is widely used in robotics research and development to test and validate robot behavior in a safe and controlled environment.
+        </p>
+
+        <h2>Setting Up Gazebo with ROS</h2>
+        <p>
+            Follow these steps to set up Gazebo with ROS:
+        </p>
+        <h3>1. Install Gazebo and ROS Integration</h3>
+        <p>
+            Install Gazebo and the ROS-Gazebo integration packages:
+        </p>
+        <pre><code>sudo apt update
+sudo apt install ros-noetic-gazebo-ros-pkgs ros-noetic-gazebo-ros-control</code></pre>
+
+        <h3>2. Launch Gazebo</h3>
+        <p>
+            Launch Gazebo with ROS integration:
+        </p>
+        <pre><code>roslaunch gazebo_ros empty_world.launch</code></pre>
+        <p>
+            This will open Gazebo with an empty world.
+        </p>
+
+        <h2>Adding a Robot to Gazebo</h2>
+        <p>
+            Follow these steps to add a robot to your Gazebo simulation:
+        </p>
+        <h3>1. Create a ROS Package</h3>
+        <p>
+            Create a ROS package to organize your robot simulation:
+        </p>
+        <pre><code>cd ~/catkin_ws/src
+catkin_create_pkg my_robot_gazebo roscpp rospy gazebo_ros</code></pre>
+
+        <h3>2. Add a Robot Model</h3>
+        <p>
+            Create a URDF (Unified Robot Description Format) file for your robot. For example, save the following as <code>my_robot.urdf</code>:
+        </p>
+        <pre><code>&lt;robot name="my_robot"&gt;
+  &lt;link name="base_link"&gt;
+    &lt;visual&gt;
+      &lt;geometry&gt;
+        &lt;box size="0.5 0.5 0.1"/&gt;
+      &lt;/geometry&gt;
+    &lt;/visual&gt;
+    &lt;collision&gt;
+      &lt;geometry&gt;
+        &lt;box size="0.5 0.5 0.1"/&gt;
+      &lt;/geometry&gt;
+    &lt;/collision&gt;
+    &lt;inertial&gt;
+      &lt;mass value="10"/&gt;
+      &lt;inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/&gt;
+    &lt;/inertial&gt;
+  &lt;/link&gt;
+&lt;/robot&gt;</code></pre>
+
+        <h3>3. Launch the Robot in Gazebo</h3>
+        <p>
+            Create a launch file (e.g., <code>my_robot.launch</code>) to spawn the robot in Gazebo:
+        </p>
+        <pre><code>&lt;launch&gt;
+  &lt;param name="robot_description" textfile="$(find my_robot_gazebo)/urdf/my_robot.urdf"/&gt;
+  &lt;node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model my_robot"/&gt;
+&lt;/launch&gt;</code></pre>
+        <p>
+            Launch the simulation:
+        </p>
+        <pre><code>roslaunch my_robot_gazebo my_robot.launch</code></pre>
+
+        <h2>Running a Simulation</h2>
+        <p>
+            Once your robot is added to Gazebo, you can interact with it using ROS tools. For example:
+        </p>
+        <h3>1. Control the Robot</h3>
+        <p>
+            Use ROS topics or services to control the robot. For example, publish a velocity command to move the robot:
+        </p>
+        <pre><code>rostopic pub /cmd_vel geometry_msgs/Twist "linear:
+  x: 0.5
+  y: 0.0
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: 0.0"</code></pre>
+
+        <h3>2. Visualize Sensor Data</h3>
+        <p>
+            Use RViz to visualize sensor data from the robot:
+        </p>
+        <pre><code>rosrun rviz rviz</code></pre>
+
+        <h2>Next Steps</h2>
+        <p>
+            Now that you've learned how to set up a Gazebo simulation, add robots, and run simulations, you're ready to start building your own ROS projects. Check out our <a href="ros-course.html" class="cta-button">ROS Noetic Mastery Course</a> to dive deeper into ROS and build real-world robotics applications.
+        </p>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2025 Tech Tronics. All rights reserved.</p>
+    </div>
+</body>
+</html>

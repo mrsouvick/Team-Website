@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn how to set up ROS Noetic on Ubuntu with this step-by-step guide.">
+    <title>Setup ROS Noetic on Ubuntu - Tech Tronics</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #0a0f1f; /* Dark blue background */
+            color: #e0e0e0; /* Light gray text */
+        }
+        h1, h2 {
+            color: #00ffcc; /* Neon teal for headings */
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        p {
+            font-size: 1.1rem;
+            color: #c0c0c0; /* Light gray for paragraphs */
+        }
+        code {
+            background-color: #1a1f2e; /* Darker blue for code blocks */
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #00ffcc; /* Neon teal for code text */
+        }
+        pre {
+            background-color: #1a1f2e; /* Darker blue for pre blocks */
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            border: 1px solid #00ffcc; /* Neon teal border */
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #121827; /* Dark blue container background */
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.1); /* Neon teal shadow */
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+        a {
+            color: #00ffcc; /* Neon teal for links */
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.9rem;
+            color: #808080; /* Gray for footer text */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>How to Set Up ROS Noetic on Ubuntu</h1>
+        <p>This guide will walk you through the steps to install and set up ROS Noetic on Ubuntu 20.04.</p>
+
+        <h2>Step 1: Update Your Ubuntu System</h2>
+        <p>Before installing ROS, ensure your system is up to date:</p>
+        <pre><code>sudo apt update
+sudo apt upgrade</code></pre>
+
+        <h2>Step 2: Set Up ROS Noetic Repository</h2>
+        <p>Add the ROS Noetic repository to your system:</p>
+        <pre><code>sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'</code></pre>
+
+        <h2>Step 3: Add the ROS Key</h2>
+        <p>Add the ROS key to authenticate the packages:</p>
+        <pre><code>sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654</code></pre>
+
+        <h2>Step 4: Install ROS Noetic</h2>
+        <p>Update the package list and install ROS Noetic:</p>
+        <pre><code>sudo apt update
+sudo apt install ros-noetic-desktop-full</code></pre>
+
+        <h2>Step 5: Initialize rosdep</h2>
+        <p>Initialize <code>rosdep</code> to manage dependencies:</p>
+        <pre><code>sudo rosdep init
+rosdep update</code></pre>
+
+        <h2>Step 6: Set Up Environment Variables</h2>
+        <p>Add ROS environment variables to your shell startup script:</p>
+        <pre><code>echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
+source ~/.bashrc</code></pre>
+
+        <h2>Step 7: Verify Installation</h2>
+        <p>Test your ROS installation by running the following command:</p>
+        <pre><code>roscore</code></pre>
+        <p>If ROS is installed correctly, you should see output indicating that the ROS master is running.</p>
+
+        <h2>Step 8: Install Additional Tools (Optional)</h2>
+        <p>Install useful ROS tools like <code>rosinstall</code> and <code>catkin</code>:</p>
+        <pre><code>sudo apt install python3-rosinstall python3-rosinstall-generator python3-wstool build-essential</code></pre>
+
+        <h2>Conclusion</h2>
+        <p>Congratulations! You have successfully set up ROS Noetic on Ubuntu. You can now start developing and running ROS applications.</p>
+        <p>For more information, visit the official <a href="http://wiki.ros.org/noetic/Installation/Ubuntu" target="_blank">ROS Noetic Installation Guide</a>.</p>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2025 Tech Tronics. All rights reserved.</p>
+    </div>
+</body>
+</html>

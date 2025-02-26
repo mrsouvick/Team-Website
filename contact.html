@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contact Tech Tronics for inquiries, support, or collaboration opportunities.">
+    <title>Contact Us - Tech Tronics</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #0a0f1f; /* Dark blue background */
+            color: #e0e0e0; /* Light gray text */
+        }
+        h1, h2 {
+            color: #00ffcc; /* Neon teal for headings */
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        p {
+            font-size: 1.1rem;
+            color: #c0c0c0; /* Light gray for paragraphs */
+        }
+        a {
+            color: #00ffcc; /* Neon teal for links */
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background-color: #121827; /* Dark blue navbar */
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .navbar h1 {
+            font-size: 1.8rem;
+            margin: 0;
+            color: #00ffcc; /* Neon teal for logo */
+        }
+        .navbar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 20px;
+        }
+        .navbar ul li {
+            display: inline;
+        }
+        .navbar ul li a {
+            color: #e0e0e0; /* Light gray for nav links */
+            font-size: 1rem;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .navbar ul li a:hover {
+            background-color: #00ffcc; /* Neon teal hover */
+            color: #0a0f1f; /* Dark blue text */
+        }
+
+        /* Contact Section */
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .contact-hero {
+            background: linear-gradient(135deg, #1a1f2e, #0a0f1f); /* Subtle gradient */
+            padding: 60px 20px;
+            text-align: center;
+            border-radius: 12px;
+            margin: 20px;
+        }
+        .contact-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        .contact-hero p {
+            font-size: 1.2rem;
+            color: #c0c0c0;
+        }
+
+        /* Contact Form */
+        .contact-form {
+            background: #1a1f2e; /* Dark blue form background */
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px;
+        }
+        .contact-form label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            color: #c0c0c0;
+        }
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #00ffcc; /* Neon teal border */
+            border-radius: 5px;
+            background-color: #121827; /* Dark blue input background */
+            color: #e0e0e0; /* Light gray text */
+            font-size: 1rem;
+        }
+        .contact-form textarea {
+            resize: vertical;
+            height: 150px;
+        }
+        .contact-form button {
+            background-color: #00ffcc; /* Neon teal button */
+            color: #0a0f1f; /* Dark blue text */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .contact-form button:hover {
+            background-color: #0077ff; /* Blue hover effect */
+        }
+
+        /* Contact Info */
+        .contact-info {
+            background: #1a1f2e; /* Dark blue background */
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px;
+        }
+        .contact-info h2 {
+            margin-bottom: 20px;
+        }
+        .contact-info p {
+            margin-bottom: 10px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 20px;
+            background-color: #121827; /* Dark blue footer background */
+            color: #808080; /* Gray footer text */
+            border-radius: 12px;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <h1>Tech Tronics</h1>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="courses.html">Courses</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- Contact Hero Section -->
+    <div class="contact-hero">
+        <h1>Contact Us</h1>
+        <p>We'd love to hear from you! Reach out for inquiries, support, or collaboration opportunities.</p>
+    </div>
+
+    <!-- Contact Container -->
+    <div class="contact-container">
+        <!-- Contact Form -->
+        <div class="contact-form">
+            <h2>Send Us a Message</h2>
+            <form action="https://forms.gle/WBmkBXzyreoYeV8r7" method="post">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="message">Message</label>
+                <textarea id="message" name="message" required></textarea>
+
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="contact-info">
+            <h2>Contact Information</h2>
+            <p><strong>Email:</strong> <a href="connect.techtronics@gmail.com">connect.techtronics@gmail.com</a></p>
+            <h2>Fill This Google Form</h2>
+            <a href="https://forms.gle/WBmkBXzyreoYeV8r7">Fill This Google Form</a>
+           
+        </div>
+
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2025 Tech Tronics. All rights reserved.</p>
+    </div>
+</body>
+</html>

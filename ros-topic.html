@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn about ROS topics, their role in ROS communication, and how to create, publish, and subscribe to topics. A detailed guide for beginners.">
+    <title>ROS Topics - Tech Tronics</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #0a0f1f; /* Dark blue background */
+            color: #e0e0e0; /* Light gray text */
+            line-height: 1.6;
+        }
+        h1, h2, h3 {
+            color: #00ffcc; /* Neon teal for headings */
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        h2 {
+            font-size: 2rem;
+            margin-top: 40px;
+            margin-bottom: 15px;
+        }
+        h3 {
+            font-size: 1.5rem;
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 1.1rem;
+            color: #c0c0c0; /* Light gray for paragraphs */
+            margin-bottom: 20px;
+        }
+        a {
+            color: #00ffcc; /* Neon teal for links */
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        pre {
+            background-color: #1a1f2e; /* Dark blue code background */
+            padding: 15px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+        code {
+            font-family: 'Courier New', monospace;
+            color: #00ffcc; /* Neon teal for code */
+        }
+        .cta-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #00ffcc; /* Neon teal button */
+            color: #0a0f1f; /* Dark blue text */
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .cta-button:hover {
+            background-color: #0077ff; /* Blue hover effect */
+        }
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 20px;
+            background-color: #121827; /* Dark blue footer background */
+            color: #808080; /* Gray footer text */
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Tutorial Title -->
+        <h1>ROS Topics</h1>
+
+        <!-- Tutorial Content -->
+        <p>
+            ROS topics are the primary means of communication between ROS nodes. They allow nodes to exchange data in the form of messages. In this tutorial, you'll learn what ROS topics are, how they work, and how to create, publish, and subscribe to topics.
+        </p>
+
+        <h2>What is a ROS Topic?</h2>
+        <p>
+            A ROS topic is a named bus over which nodes exchange messages. Topics are used for one-way, many-to-many communication. A node can publish messages to a topic, and multiple nodes can subscribe to the same topic to receive those messages.
+        </p>
+
+        <h2>Key Characteristics of ROS Topics</h2>
+        <p>
+            ROS topics have the following characteristics:
+        </p>
+        <h3>1. Asynchronous Communication</h3>
+        <p>
+            Topics enable asynchronous communication, meaning publishers and subscribers do not need to be active at the same time.
+        </p>
+        <h3>2. Many-to-Many Communication</h3>
+        <p>
+            Multiple nodes can publish to and subscribe from the same topic, allowing for flexible communication patterns.
+        </p>
+        <h3>3. Message-Based</h3>
+        <p>
+            Topics use messages to exchange data. ROS provides standard message types, and you can also define custom message types.
+        </p>
+
+        <h2>Creating a ROS Topic</h2>
+        <p>
+            Follow these steps to create, publish, and subscribe to a ROS topic:
+        </p>
+        <h3>1. Create a ROS Package</h3>
+        <p>
+            If you haven't already, create a ROS package to organize your nodes:
+        </p>
+        <pre><code>cd ~/catkin_ws/src
+catkin_create_pkg my_package roscpp rospy std_msgs</code></pre>
+
+        <h3>2. Write the Publisher Node</h3>
+        <p>
+            Create a Python or C++ file for the publisher node. Below is an example of a simple publisher node in Python:
+        </p>
+        <pre><code>#!/usr/bin/env python
+import rospy
+from std_msgs.msg import String
+
+def talker():
+    pub = rospy.Publisher('chatter', String, queue_size=10)
+    rospy.init_node('talker', anonymous=True)
+    rate = rospy.Rate(10) # 10Hz
+    while not rospy.is_shutdown():
+        hello_str = "Hello, ROS! %s" % rospy.get_time()
+        rospy.loginfo(hello_str)
+        pub.publish(hello_str)
+        rate.sleep()
+
+if __name__ == '__main__':
+    try:
+        talker()
+    except rospy.ROSInterruptException:
+        pass</code></pre>
+
+        <h3>3. Write the Subscriber Node</h3>
+        <p>
+            Create a Python or C++ file for the subscriber node. Below is an example of a simple subscriber node in Python:
+        </p>
+        <pre><code>#!/usr/bin/env python
+import rospy
+from std_msgs.msg import String
+
+def callback(data):
+    rospy.loginfo(rospy.get_caller_id() + " I heard %s", data.data)
+
+def listener():
+    rospy.init_node('listener', anonymous=True)
+    rospy.Subscriber('chatter', String, callback)
+    rospy.spin()
+
+if __name__ == '__main__':
+    listener()</code></pre>
+
+        <h3>4. Make the Nodes Executable</h3>
+        <p>
+            Make the Python files executable:
+        </p>
+        <pre><code>chmod +x talker.py
+chmod +x listener.py</code></pre>
+
+        <h3>5. Build the Package</h3>
+        <p>
+            Build the package to ensure everything is set up correctly:
+        </p>
+        <pre><code>cd ~/catkin_ws
+catkin_make</code></pre>
+
+        <h3>6. Run the Nodes</h3>
+        <p>
+            Source the workspace and run the nodes in separate terminals:
+        </p>
+        <pre><code># Terminal 1
+source devel/setup.bash
+rosrun my_package talker.py
+
+# Terminal 2
+source devel/setup.bash
+rosrun my_package listener.py</code></pre>
+
+        <h2>Managing ROS Topics</h2>
+        <p>
+            Here are some useful commands for managing ROS topics:
+        </p>
+        <h3>1. List Topics</h3>
+        <p>
+            List all active topics in the ROS system:
+        </p>
+        <pre><code>rostopic list</code></pre>
+
+        <h3>2. Get Topic Information</h3>
+        <p>
+            Get detailed information about a specific topic:
+        </p>
+        <pre><code>rostopic info /chatter</code></pre>
+
+        <h3>3. Echo Topic Messages</h3>
+        <p>
+            Display messages published to a topic in real-time:
+        </p>
+        <pre><code>rostopic echo /chatter</code></pre>
+
+        <h2>Next Steps</h2>
+        <p>
+            Now that you've learned about ROS topics and how to create, publish, and subscribe to them, you're ready to start building your own ROS projects. Check out our <a href="ros-course.html" class="cta-button">ROS Noetic Mastery Course</a> to dive deeper into ROS and build real-world robotics applications.
+        </p>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2025 Tech Tronics. All rights reserved.</p>
+    </div>
+</body>
+</html>

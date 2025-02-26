@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn about ROS services and actions, their role in ROS communication, and how to create and use them. A detailed guide for beginners.">
+    <title>ROS Services and Actions - Tech Tronics</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #0a0f1f; /* Dark blue background */
+            color: #e0e0e0; /* Light gray text */
+            line-height: 1.6;
+        }
+        h1, h2, h3 {
+            color: #00ffcc; /* Neon teal for headings */
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        h2 {
+            font-size: 2rem;
+            margin-top: 40px;
+            margin-bottom: 15px;
+        }
+        h3 {
+            font-size: 1.5rem;
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 1.1rem;
+            color: #c0c0c0; /* Light gray for paragraphs */
+            margin-bottom: 20px;
+        }
+        a {
+            color: #00ffcc; /* Neon teal for links */
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        pre {
+            background-color: #1a1f2e; /* Dark blue code background */
+            padding: 15px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+        code {
+            font-family: 'Courier New', monospace;
+            color: #00ffcc; /* Neon teal for code */
+        }
+        .cta-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #00ffcc; /* Neon teal button */
+            color: #0a0f1f; /* Dark blue text */
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .cta-button:hover {
+            background-color: #0077ff; /* Blue hover effect */
+        }
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 20px;
+            background-color: #121827; /* Dark blue footer background */
+            color: #808080; /* Gray footer text */
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Tutorial Title -->
+        <h1>ROS Services and Actions</h1>
+
+        <!-- Tutorial Content -->
+        <p>
+            ROS services and actions are advanced communication mechanisms that enable synchronous and asynchronous interactions between ROS nodes. In this tutorial, you'll learn what ROS services and actions are, how they work, and how to create and use them.
+        </p>
+
+        <h2>What are ROS Services?</h2>
+        <p>
+            ROS services are a synchronous communication mechanism where a client node sends a request to a server node and waits for a response. Services are ideal for tasks that require immediate feedback, such as querying a sensor or performing a calculation.
+        </p>
+
+        <h2>Creating a ROS Service</h2>
+        <p>
+            Follow these steps to create and use a ROS service:
+        </p>
+        <h3>1. Create a ROS Package</h3>
+        <p>
+            If you haven't already, create a ROS package to organize your service:
+        </p>
+        <pre><code>cd ~/catkin_ws/src
+catkin_create_pkg my_package roscpp rospy std_msgs</code></pre>
+
+        <h3>2. Define the Service</h3>
+        <p>
+            Create a <code>srv</code> directory in your package and define a service file (e.g., <code>AddTwoInts.srv</code>):
+        </p>
+        <pre><code>mkdir -p ~/catkin_ws/src/my_package/srv
+echo "int64 a
+int64 b
+---
+int64 sum" > ~/catkin_ws/src/my_package/srv/AddTwoInts.srv</code></pre>
+
+        <h3>3. Update the Package Configuration</h3>
+        <p>
+            Update the <code>CMakeLists.txt</code> and <code>package.xml</code> files to include the service:
+        </p>
+        <h4>CMakeLists.txt</h4>
+        <pre><code>find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  rospy
+  std_msgs
+  message_generation
+)
+
+add_service_files(
+  FILES
+  AddTwoInts.srv
+)
+
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+)
+
+catkin_package(
+  CATKIN_DEPENDS message_runtime
+)</code></pre>
+
+        <h4>package.xml</h4>
+        <pre><code>&lt;build_depend&gt;message_generation&lt;/build_depend&gt;
+&lt;exec_depend&gt;message_runtime&lt;/exec_depend&gt;</code></pre>
+
+        <h3>4. Write the Service Server</h3>
+        <p>
+            Create a Python or C++ file for the service server. Below is an example of a simple service server in Python:
+        </p>
+        <pre><code>#!/usr/bin/env python
+from my_package.srv import AddTwoInts, AddTwoIntsResponse
+import rospy
+
+def handle_add_two_ints(req):
+    rospy.loginfo("Returning [%s + %s = %s]" % (req.a, req.b, (req.a + req.b)))
+    return AddTwoIntsResponse(req.a + req.b)
+
+def add_two_ints_server():
+    rospy.init_node('add_two_ints_server')
+    s = rospy.Service('add_two_ints', AddTwoInts, handle_add_two_ints)
+    rospy.loginfo("Ready to add two ints.")
+    rospy.spin()
+
+if __name__ == "__main__":
+    add_two_ints_server()</code></pre>
+
+        <h3>5. Write the Service Client</h3>
+        <p>
+            Create a Python or C++ file for the service client. Below is an example of a simple service client in Python:
+        </p>
+        <pre><code>#!/usr/bin/env python
+import sys
+import rospy
+from my_package.srv import AddTwoInts
+
+def add_two_ints_client(x, y):
+    rospy.wait_for_service('add_two_ints')
+    try:
+        add_two_ints = rospy.ServiceProxy('add_two_ints', AddTwoInts)
+        resp = add_two_ints(x, y)
+        return resp.sum
+    except rospy.ServiceException as e:
+        rospy.logerr("Service call failed: %s" % e)
+
+if __name__ == "__main__":
+    if len(sys.argv) == 3:
+        x = int(sys.argv[1])
+        y = int(sys.argv[2])
+    else:
+        print("Usage: add_two_ints_client X Y")
+        sys.exit(1)
+    rospy.loginfo("Requesting %s + %s" % (x, y))
+    rospy.loginfo("%s + %s = %s" % (x, y, add_two_ints_client(x, y)))</code></pre>
+
+        <h3>6. Build and Run the Service</h3>
+        <p>
+            Build the package and run the service server and client:
+        </p>
+        <pre><code>cd ~/catkin_ws
+catkin_make
+source devel/setup.bash
+
+# Terminal 1: Run the service server
+rosrun my_package add_two_ints_server.py
+
+# Terminal 2: Run the service client
+rosrun my_package add_two_ints_client.py 5 10</code></pre>
+
+        <h2>What are ROS Actions?</h2>
+        <p>
+            ROS actions are an asynchronous communication mechanism where a client node sends a goal to an action server and receives feedback and results as the goal is being processed. Actions are ideal for long-running tasks, such as navigating a robot or performing a complex calculation.
+        </p>
+
+        <h2>Creating a ROS Action</h2>
+        <p>
+            Follow these steps to create and use a ROS action:
+        </p>
+        <h3>1. Define the Action</h3>
+        <p>
+            Create an <code>action</code> directory in your package and define an action file (e.g., <code>Fibonacci.action</code>):
+        </p>
+        <pre><code>mkdir -p ~/catkin_ws/src/my_package/action
+echo "# Goal
+int32 order
+---
+# Result
+int32[] sequence
+---
+# Feedback
+int32[] sequence" > ~/catkin_ws/src/my_package/action/Fibonacci.action</code></pre>
+
+        <h3>2. Update the Package Configuration</h3>
+        <p>
+            Update the <code>CMakeLists.txt</code> and <code>package.xml</code> files to include the action:
+        </p>
+        <h4>CMakeLists.txt</h4>
+        <pre><code>find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  rospy
+  std_msgs
+  actionlib
+  actionlib_msgs
+  message_generation
+)
+
+add_action_files(
+  FILES
+  Fibonacci.action
+)
+
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+  actionlib_msgs
+)
+
+catkin_package(
+  CATKIN_DEPENDS actionlib actionlib_msgs message_runtime
+)</code></pre>
+
+        <h4>package.xml</h4>
+        <pre><code>&lt;build_depend&gt;actionlib&lt;/build_depend&gt;
+&lt;build_depend&gt;actionlib_msgs&lt;/build_depend&gt;
+&lt;build_depend&gt;message_generation&lt;/build_depend&gt;
+&lt;exec_depend&gt;actionlib&lt;/exec_depend&gt;
+&lt;exec_depend&gt;actionlib_msgs&lt;/exec_depend&gt;
+&lt;exec_depend&gt;message_runtime&lt;/exec_depend&gt;</code></pre>
+
+        <h3>3. Write the Action Server</h3>
+        <p>
+            Create a Python or C++ file for the action server. Below is an example of a simple action server in Python:
+        </p>
+        <pre><code>#!/usr/bin/env python
+import rospy
+import actionlib
+from my_package.msg import FibonacciAction, FibonacciFeedback, FibonacciResult
+
+class FibonacciActionServer:
+    def __init__(self):
+        self.server = actionlib.SimpleActionServer('fibonacci', FibonacciAction, self.execute, False)
+        self.server.start()
+
+    def execute(self, goal):
+        feedback = FibonacciFeedback()
+        result = FibonacciResult()
+        feedback.sequence = [0, 1]
+        for i in range(1, goal.order):
+            feedback.sequence.append(feedback.sequence[i] + feedback.sequence[i-1])
+            self.server.publish_feedback(feedback)
+        result.sequence = feedback.sequence
+        self.server.set_succeeded(result)
+
+if __name__ == "__main__":
+    rospy.init_node('fibonacci_action_server')
+    server = FibonacciActionServer()
+    rospy.spin()</code></pre>
+
+        <h3>4. Write the Action Client</h3>
+        <p>
+            Create a Python or C++ file for the action client. Below is an example of a simple action client in Python:
+        </p>
+        <pre><code>#!/usr/bin/env python
+import rospy
+import actionlib
+from my_package.msg import FibonacciAction, FibonacciGoal
+
+def fibonacci_client():
+    client = actionlib.SimpleActionClient('fibonacci', FibonacciAction)
+    client.wait_for_server()
+    goal = FibonacciGoal(order=10)
+    client.send_goal(goal)
+    client.wait_for_result()
+    return client.get_result()
+
+if __name__ == "__main__":
+    rospy.init_node('fibonacci_action_client')
+    result = fibonacci_client()
+    rospy.loginfo("Fibonacci sequence: %s" % result.sequence)</code></pre>
+
+        <h3>5. Build and Run the Action</h3>
+        <p>
+            Build the package and run the action server and client:
+        </p>
+        <pre><code>cd ~/catkin_ws
+catkin_make
+source devel/setup.bash
+
+# Terminal 1: Run the action server
+rosrun my_package fibonacci_action_server.py
+
+# Terminal 2: Run the action client
+rosrun my_package fibonacci_action_client.py</code></pre>
+
+        <h2>Next Steps</h2>
+        <p>
+            Now that you've learned about ROS services and actions and how to create and use them, you're ready to start building your own ROS projects. Check out our <a href="ros-course.html" class="cta-button">ROS Noetic Mastery Course</a> to dive deeper into ROS and build real-world robotics applications.
+        </p>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2025 Tech Tronics. All rights reserved.</p>
+    </div>
+</body>
+</html>
