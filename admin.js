@@ -11,7 +11,7 @@ document.getElementById('login-form').addEventListener('submit', function(event)
   console.log('Password:', password); // Debugging
 
   // Send login request to backend
-  fetch('https://tech-tronics-backend.onrender.com/login', {
+  fetch('https://tech-teonics-backend.onrender.com', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
